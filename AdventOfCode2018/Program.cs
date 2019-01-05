@@ -20,8 +20,13 @@ namespace AdventOfCode2018
             //    Console.WriteLine(s);
             //}
             //Console.ReadLine();
-            Console.WriteLine("Day 2 Puzzle 2:");
+            Console.WriteLine("Day 2 Puzzle 1:");
             Console.WriteLine(Day2Puzzle1(@"C:\_aoc2018\day2puzzle1.txt"));
+            Console.WriteLine();
+            Console.ReadLine();
+
+            Console.WriteLine("Day 2 Puzzle 2:");
+            Console.WriteLine(Day2Puzzle2(@"C:\_aoc2018\day2puzzle1.txt"));
             Console.WriteLine();
             Console.ReadLine();
         }
@@ -58,6 +63,33 @@ namespace AdventOfCode2018
             }
 
             return (numberOfTwos*numberOfThrees).ToString();
+        }
+
+        static string Day2Puzzle2(string path)
+        {
+            List<string> puzzleInput = new List<string> { };
+            puzzleInput = ConvertPuzzleInputToListString(path);
+            puzzleInput.Sort();
+            Console.WriteLine("Testing sort");
+            string candidate = "";
+            foreach (string line in puzzleInput)
+            {
+                for (int i = 0; i < puzzleInput.Count; i++)
+                {
+                    int mistakeCount = 0;
+                    for (int j = 0; j<line.Length; j++)
+                    {
+                        if (line[j] !=puzzleInput[i][j])
+                        { mistakeCount++; }
+                    }
+                    if (mistakeCount == 1)
+                    { candidate = puzzleInput[i];
+                        Console.WriteLine("Candidate found: " + candidate);
+                    }
+                }
+            }
+            Console.WriteLine();
+            return 0.ToString();
         }
 
         static List<string> ConvertPuzzleInputToListString(string path)
