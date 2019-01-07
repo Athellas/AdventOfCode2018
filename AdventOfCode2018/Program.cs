@@ -72,6 +72,7 @@ namespace AdventOfCode2018
             puzzleInput.Sort();
             Console.WriteLine("Testing sort");
             string candidate = "";
+            List<int> candidateIndex = new List<int> ();
             foreach (string line in puzzleInput)
             {
                 for (int i = 0; i < puzzleInput.Count; i++)
@@ -83,13 +84,21 @@ namespace AdventOfCode2018
                         { mistakeCount++; }
                     }
                     if (mistakeCount == 1)
-                    { candidate = puzzleInput[i];
+                    {
+                        candidate = puzzleInput[i];
+                        candidateIndex.Add(i);
                         Console.WriteLine("Candidate found: " + candidate);
                     }
                 }
             }
             Console.WriteLine();
-            return 0.ToString();
+            List<char> finalWord = new List<char>();
+            for(int i=0; i<puzzleInput[candidateIndex[0]].Length; i++)
+            {
+                if (puzzleInput[candidateIndex[0]][i] == puzzleInput[candidateIndex[1]][i])
+                    finalWord.Add(puzzleInput[candidateIndex[0]][i]);
+            }            
+            return string.Concat(finalWord);
         }
 
         static List<string> ConvertPuzzleInputToListString(string path)
