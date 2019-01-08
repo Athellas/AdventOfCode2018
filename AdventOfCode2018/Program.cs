@@ -31,8 +31,8 @@ namespace AdventOfCode2018
             //Console.WriteLine();
             //Console.ReadLine();
 
-            Console.WriteLine("Day 3 Puzzle 1: ");
-            Console.WriteLine(Day3Puzzle1(@"C:\_aoc2018\day3puzzle1.txt"));
+            Console.WriteLine("Day 3 Puzzle 2: ");
+            Console.WriteLine(Day3Puzzle2(@"C:\_aoc2018\day3puzzle1.txt"));
             Console.WriteLine();
             Console.ReadLine();
         }
@@ -169,6 +169,80 @@ namespace AdventOfCode2018
             }
             
             return result.ToString();
+        }
+
+        static string Day3Puzzle2(string path)
+        {
+            List<string> puzzleInput = new List<string> { };
+            puzzleInput = ConvertPuzzleInputToListString(path);
+
+            int[,] fabric = new int[1000, 1000];
+
+            // #1 @ 286,440: 19x24
+
+            List<int> positionX = new List<int>(new int[puzzleInput.Count]);
+            string patternPositionX = @"(\d\d\d\,)| (\d\d\,)| (\d\,)";
+            for (int i = 0; i < puzzleInput.Count; i++)
+            {
+                positionX[i] = Int32.Parse((Regex.Match(puzzleInput[i], patternPositionX).Value).TrimEnd(','));
+            //    Console.WriteLine(positionX[i].ToString());                
+            }
+
+            List<int> positionY = new List<int>(new int[puzzleInput.Count]);
+            string patternPositionY = @"(\,\d\d\d)|(\,\d\d)|(\,\d)";
+            for (int i = 0; i < puzzleInput.Count; i++)
+            {
+                positionY[i] = Int32.Parse((Regex.Match(puzzleInput[i], patternPositionY).Value).TrimStart(','));
+            //    Console.WriteLine(positionY[i].ToString());
+            }
+
+            List<int> sizeX = new List<int>(new int[puzzleInput.Count]);
+            string patternSizeX = @"(\d\dx)|(\dx)";
+            for (int i = 0; i < puzzleInput.Count; i++)
+            {
+                sizeX[i] = Int32.Parse((Regex.Match(puzzleInput[i], patternSizeX).Value).TrimEnd('x'));
+            //    Console.WriteLine(sizeX[i].ToString());
+            }
+
+            List<int> sizeY = new List<int>(new int[puzzleInput.Count]);
+            string patternSizeY = @"(x\d\d)|(x\d)";
+            for (int i = 0; i < puzzleInput.Count; i++)
+            {
+                sizeY[i] = Int32.Parse((Regex.Match(puzzleInput[i], patternSizeY).Value).TrimStart('x'));
+            //   Console.WriteLine(sizeY[i].ToString());
+            }
+            int result = 0;
+
+            for (int i = 0; i < puzzleInput.Count; i++)
+            {
+                for (int x = 0; x < sizeX[i]; x++)
+                {
+                    for (int y = 0; y < sizeY[i]; y++)
+                    {
+                        fabric[positionX[i] + x, positionY[i] + y]++;
+                    }
+                }
+            }
+
+            for (int i=0; i < puzzleInput.Count; i++)
+            {
+                int check = 0;
+                for (int x = 0; x < sizeX[i]; x++ )
+                {
+                    for (int y = 0; y < sizeY[i]; y++)
+                    {
+                        if (fabric[positionX[i] + x, positionY[i] + y]>1)
+                        check++;
+                    }
+                }
+                if (check == 0)
+                {
+                    result = i;
+                    Console.WriteLine("potential result: " + i.ToString());
+                }
+            }
+            
+            return (result+1).ToString();
         }
 
         static List<string> ConvertPuzzleInputToListString(string path)
